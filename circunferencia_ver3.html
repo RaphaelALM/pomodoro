@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Pomodoro 3.0</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<style>
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:linear-gradient(135deg, #DCE3E6, #b1abd2);
+    font-family:Arial, sans-serif;
+}
+
+.container{
+  width: 70%;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+h1{
+    font-family: "Press Start 2P", system-ui;
+    margin-bottom:30px;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.timer-container{
+    position:relative;
+    width:220px;
+    height:220px;
+    margin:0 auto 20px auto;
+}
+
+svg{
+    transform:rotate(-90deg);
+}
+
+circle{
+    fill:none;
+    stroke-width:10;
+}
+
+.bg{
+    stroke:#e9ecef;
+}
+
+.progress{
+    /* stroke:#2d22a9; */
+    stroke:#9f7db1;
+    stroke-linecap:round;
+    transition:stroke-dashoffset .3s linear;
+}
+
+.timer{
+    font-family: "Press Start 2P", system-ui;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:30px;
+    font-weight:700;
+}
+
+.form-range{
+    width:100%;
+    margin-bottom:25px;
+}
+
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("fonts/PressStart2P-Regular.ttf") format("truetype");
+}
+
+button {
+    width: 100px;
+    height: 60px;
+    color: #fff;
+    background-color: #6abc3a;
+    padding: 15px 40px 15px 40px;
+    margin: 10px;
+    font-size: 20px;
+    font-family: "Press Start 2P", system-ui;
+    border: 0;
+    box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black, 0px 10px #00000038, 5px 5px #00000038, -5px 5px #00000038, inset 0px 5px #ffffff36 ;
+    cursor: pointer;
+}
+
+ button:active {
+     transform: translateY(5px);
+     box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black,inset 0px 5px #00000038;
+}
+
+</style>
+
+<body>
+
+<div class="container mt-5">
+
+    <h1>Pomodoro</h1>
+
+    <div class="mb-3">
+        <input
+                id="minutesSlider"
+                type="range"
+                value="25"
+                min="5"
+                max="60"
+                step="5"
+                class="form-range">
+    </div>
+
+    <div class="timer-container">
+        
+        <svg width="220" height="220">
+            <circle class="bg"
+                cx="110"
+                cy="110"
+                r="95">
+            </circle>
+
+            <circle
+                id="progressCircle"
+                class="progress"
+                cx="110"
+                cy="110"
+                r="95">
+            </circle>
+        </svg>
+            <div id="timer" class="timer">25:00</div>
+    </div>
+        <button id="actionBtn" style="background-color: #9f7db1;">▶</button>
+        <button id="stopBtn" style="background-color: #9f7db1;">■</button>
+
+</div>
+
+<script>
+
+    // Progress Circle
+    const radius = 95;
+    const circumference = 2 * Math.PI * radius;
+
+    const progressCircle = document.getElementById("progressCircle");
+    
+    progressCircle.style.strokeDasharray = circumference;
+    progressCircle.style.strokeDashoffset = circumference;
+
+    const slider = document.getElementById("minutesSlider");
+    const timer = document.getElementById("timer");
+    const actionBtn = document.getElementById("actionBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    
+    let state = "STOPPED";
+    let duration = 0;          // tempo total em ms
+    let startTime = 0;         // quando iniciou
+    let endTime = 0;                // 
+    let animationId = null;
+
+    /* =========================
+       RENDER (fonte única da verdade)
+    ========================= */
+    function render() {
+
+        if (!endTime) return;
+
+        const remaining = Math.max(0, endTime - Date.now());
+
+        const total = Math.floor(remaining / 1000);
+        const m = Math.floor(total / 60);
+        const s = total % 60;
+
+        timer.textContent =
+            String(m).padStart(2, "0") + ":" +
+            String(s).padStart(2, "0");
+        
+        const progress = duration ? (1 - remaining / duration) * 100 : 0;
+
+        // Progress Circle fill way
+        const offset = circumference - (progress / 100) * circumference;
+        progressCircle.style.strokeDashoffset = offset;
+        
+        if (remaining <= 0) {
+            stop();
+        }
+    }
+
+    /* =========================
+       LOOP (1 único)
+    ========================= */
+    function loop() {
+        render();
+        animationId = requestAnimationFrame(loop);
+    }
+
+    function startLoop() {
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = requestAnimationFrame(loop);
+    }
+
+    /* =========================
+       START
+    ========================= */
+    actionBtn.addEventListener("click",  () => {
+
+        if (state === "STOPPED"){
+
+            duration = slider.value * 60 * 1000;
+            startTime = Date.now();
+            endTime = startTime + duration;
+            
+
+            state = "RUNNING";
+            actionBtn.textContent = "❚❚";
+            slider.disabled = true;
+
+            startLoop();
+
+        } else if (state === "RUNNING") {
+
+            remaining = Math.max(0, endTime - Date.now());
+            state = "PAUSED";
+
+            cancelAnimationFrame(animationId);
+            animationId = null;
+            
+            actionBtn.textContent = "▶";
+
+        }
+
+        else if (state === "PAUSED") {
+
+            endTime = Date.now() + remaining;
+
+            state = "RUNNING";
+            actionBtn.textContent = "❚❚";
+
+
+            startLoop();
+
+        }
+    });
+
+    /* =========================
+       STOP
+    ========================= */
+    stopBtn.addEventListener("click", stop);
+
+    function stop() {
+
+        state = "STOPPED";
+
+        duration = 0;
+        startTime = 0;
+        endTime = 0;
+        remaining = 0;
+
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = null;
+
+        slider.disabled = false;
+        actionBtn.textContent = "▶";
+
+        progressCircle.style.strokeDashoffset = circumference;
+        timer.textContent = `${slider.value.padStart(2,"0")}:00`;
+    }
+
+    /* =========================
+       SLIDER
+    ========================= */
+    slider.addEventListener("input", () => {
+        if (state === "STOPPED") {
+            timer.textContent = `${slider.value.padStart(2,"0")}:00`;
+        }
+    });
+
+</script>
+
+</body>
+</html>
