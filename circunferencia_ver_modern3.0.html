@@ -371,7 +371,10 @@ button {
     /* =========================
        STOP
     ========================= */
-    stopBtn.addEventListener("click", stop);
+    stopBtn.addEventListener("click", () => {
+        stop(), 
+        gifChanger();});
+  
 
     function stop() {
 
@@ -388,10 +391,14 @@ button {
         slider.disabled = false;
         actionBtn.textContent = "▶";
 
-        document.getElementById('gif').src = 'static/nukoAngry18.gif';
+        document.getElementById('gif').src = 'static/nukoApplause.gif';
 
         progressCircle.style.strokeDashoffset = circumference;
         timer.textContent = `${slider.value.padStart(2,"0")}:00`;
+    }
+
+    function gifChanger(){
+        document.getElementById('gif').src = 'static/nukoAngry18.gif';
     }
 
     /* =========================
