@@ -204,7 +204,7 @@ button {
     <div class="card">    
 
         <img id="gif"
-            src="static/nukoWriting.gif"
+            src="static/nukoPout.gif"
             alt="nukoWriting">
 
         <div class="timer-container">
@@ -264,7 +264,9 @@ button {
     const timer = document.getElementById("timer");
     const actionBtn = document.getElementById("actionBtn");
     const stopBtn = document.getElementById("stopBtn");
-    
+    const gif = document.getElementById("gif");
+
+
     let state = "STOPPED";
     let duration = 0;          // tempo total em ms
     let startTime = 0;         // quando iniciou
@@ -315,6 +317,7 @@ button {
     /* =========================
        START
     ========================= */
+
     actionBtn.addEventListener("click",  () => {
 
         if (state === "STOPPED"){
@@ -327,6 +330,7 @@ button {
             state = "RUNNING";
             actionBtn.textContent = "❚❚";
             slider.disabled = true;
+            document.getElementById('gif').src = 'static/nukoWriting.gif';
 
             startLoop();
 
@@ -337,7 +341,8 @@ button {
 
             cancelAnimationFrame(animationId);
             animationId = null;
-            
+            document.getElementById('gif').src = 'static/nukoSleepBlanket.gif';
+
             actionBtn.textContent = "▶";
 
         }
@@ -348,6 +353,7 @@ button {
 
             state = "RUNNING";
             actionBtn.textContent = "❚❚";
+            document.getElementById('gif').src = 'static/nukoWriting.gif';
 
 
             startLoop();
@@ -374,6 +380,8 @@ button {
 
         slider.disabled = false;
         actionBtn.textContent = "▶";
+
+        document.getElementById('gif').src = 'static/nukoAngry18.gif';
 
         progressCircle.style.strokeDashoffset = circumference;
         timer.textContent = `${slider.value.padStart(2,"0")}:00`;

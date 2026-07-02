@@ -11,74 +11,80 @@
 
 
 body{
-    min-height:100vh;
-    margin:0;
-    background:linear-gradient(135deg,#DCE3E6,#b1abd2);
-    font-family:Arial,sans-serif;
-    overflow-x:hidden;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centraliza verticalmente */
+    align-items: center;     /* centraliza horizontalmente */
+    background: linear-gradient(135deg,#DCE3E6,#b1abd2);
+    font-family: Arial, sans-serif;
 }
 
 .container{
-    max-width:480px;
-    margin:0 auto;
-    text-align:center;
+    max-width: 480px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-
 
 #gif{
     display:block;
     margin:0 auto 0px auto;
-    width:70px;
+    width:60px;
     height:auto;
     image-rendering:pixelated;
 }
 
 
 h1 {
-    font-family: "Press Start 2P", system-ui;
-    
+    font-family: "Press Start 2P", system-ui;  
     padding: 0;
 }
 
-
-@media (max-width: 1000px) {
-    h1.logo {
-        font-size: 4rem;
-    }
+html, body{
+    overflow: hidden;
 }
-
-@media (max-width: 700px) {
-    h1.logo {
-        font-size: 3rem;
-    }
-}
-
-@media (max-width: 500px) {
-    h1.logo {
-        font-size: 2rem;
-    }
-}
-
 
 h1.logo{
-    margin-top:20px;
-    margin-bottom:130px;
+    margin: 0 0 15px 0;
+    transform: translateY(-60px);
     color:#af9db8;
-    font-size:6rem;
     text-align: center;
     text-transform:uppercase;
     text-shadow:
-        0 5px 0 #9f7db1,
-        0 15px 0 #703b8d;
+        0 2px 0 #9f7db1,
+        0 4px 0 #8b6aa0,
+        0 8px 0 #2a0a3b;
+    font-size: clamp(3rem, 12vw, 6rem);
+    white-space: nowrap;
+        
 }
 
 
 .card{
-    background:white;
+    background: rgb(255 255 255 / 35%);
     padding:30px;
     border-radius:20px;
     box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
+
+/* .card{
+    background:#f5f5f5;
+
+    padding:30px;
+
+    box-shadow:
+        0px 6px black,
+        0px -6px black,
+        6px 0px black,
+        -6px 0px black,
+        0px 12px #00000020;
+
+    border-radius:0;
+} */
+
 
 .timer-container{
     position:relative;
@@ -124,30 +130,20 @@ circle{
     appearance:none;
 
     width:100%;
-    height:12px;
-
-    background:#e9ecef;
-
-    box-shadow:
-        0px 4px black,
-        0px -4px black,
-        4px 0px black,
-        -4px 0px black;
-}
-
-.form-range::-webkit-slider-runnable-track{
-    height:12px;
-    background:#e9ecef;
+    margin-top: 25px;
+    margin-bottom: 15px;
 }
 
 .form-range::-webkit-slider-thumb{
     -webkit-appearance:none;
     appearance:none;
+    outline:none;
 
-    width:20px;
-    height:20px;
 
-    background:#9f7db1;
+    width:15px;
+    height:15px;
+
+    background:#9f7db1 !important;
 
     border:none;
     border-radius:0;
@@ -160,11 +156,25 @@ circle{
         4px 0px black,
         -4px 0px black,
         0px 6px #00000038,
-        inset 0px 4px #ffffff36;
+        inset 0px 4px #ffffff36 !important;
 
     cursor:pointer;
 }
 
+.form-range:disabled {
+    cursor: not-allowed;
+}
+
+.form-range:disabled::-webkit-slider-thumb{
+    background: #7d7d7d !important;
+
+    box-shadow:
+        0px 4px #444,
+        0px -4px #444,
+        4px 0px #444,
+        -4px 0px #444,
+        0px 6px #00000020;
+}
 
 @font-face {
   font-family: "Press Start 2P";
@@ -177,7 +187,7 @@ button {
     color: #fff;
     background-color: #6abc3a;
     padding: 15px 40px 15px 40px;
-    margin: 10px;
+    margin: 20px;
     font-size: 20px;
     font-family: "Press Start 2P", system-ui;
     border: 0;
@@ -198,49 +208,52 @@ button {
 
 <div class="container">
 
-    
+    <div class="card">    
 
-    <img id="gif"
-         src="static/nukoWriting.gif"
-         alt="nukoWriting">
+        <img id="gif"
+            src="static/nukoPout.gif"
+            alt="nukoWriting">
 
-    <div class="timer-container">
+        <div class="timer-container">
 
-        <svg width="220" height="220">
-            <circle
-                class="bg"
-                cx="110"
-                cy="110"
-                r="100">
-            </circle>
+            <svg width="220" height="220">
+                <circle
+                    class="bg"
+                    cx="110"
+                    cy="110"
+                    r="100">
+                </circle>
 
-            <circle
-                id="progressCircle"
-                class="progress"
-                cx="110"
-                cy="110"
-                r="100">
-            </circle>
-        </svg>
+                <circle
+                    id="progressCircle"
+                    class="progress"
+                    cx="110"
+                    cy="110"
+                    r="100">
+                </circle>
+            </svg>
 
-        <div id="timer" class="timer">25:00</div>
+            <div id="timer" class="timer">25:00</div>
 
+        </div>
+
+        <!-- <div class="mb-3"> -->
+            <input
+                id="minutesSlider"
+                type="range"
+                value="25"
+                min="5"
+                max="60"
+                step="5"
+                class="form-range">
+        <!-- </div> -->
+
+        <div class="buttons">
+             <button id="actionBtn" style="background-color:#9f7db1;">▶</button>
+            <button id="stopBtn" style="background-color:#9f7db1;">■</button>
+        </div>
+       
     </div>
-
-    <!-- <div class="mb-3"> -->
-        <input
-            id="minutesSlider"
-            type="range"
-            value="25"
-            min="5"
-            max="60"
-            step="5"
-            class="form-range">
-    <!-- </div> -->
-
-    <button id="actionBtn" style="background-color:#9f7db1;">▶</button>
-    <button id="stopBtn" style="background-color:#9f7db1;">■</button>
-
 </div>
 
 <script>
@@ -258,7 +271,9 @@ button {
     const timer = document.getElementById("timer");
     const actionBtn = document.getElementById("actionBtn");
     const stopBtn = document.getElementById("stopBtn");
-    
+    const gif = document.getElementById("gif");
+
+
     let state = "STOPPED";
     let duration = 0;          // tempo total em ms
     let startTime = 0;         // quando iniciou
@@ -309,6 +324,7 @@ button {
     /* =========================
        START
     ========================= */
+
     actionBtn.addEventListener("click",  () => {
 
         if (state === "STOPPED"){
@@ -321,6 +337,7 @@ button {
             state = "RUNNING";
             actionBtn.textContent = "❚❚";
             slider.disabled = true;
+            document.getElementById('gif').src = 'static/nukoWriting.gif';
 
             startLoop();
 
@@ -331,7 +348,8 @@ button {
 
             cancelAnimationFrame(animationId);
             animationId = null;
-            
+            document.getElementById('gif').src = 'static/nukoSleepBlanket.gif';
+
             actionBtn.textContent = "▶";
 
         }
@@ -342,6 +360,7 @@ button {
 
             state = "RUNNING";
             actionBtn.textContent = "❚❚";
+            document.getElementById('gif').src = 'static/nukoWriting.gif';
 
 
             startLoop();
@@ -368,6 +387,8 @@ button {
 
         slider.disabled = false;
         actionBtn.textContent = "▶";
+
+        document.getElementById('gif').src = 'static/nukoAngry18.gif';
 
         progressCircle.style.strokeDashoffset = circumference;
         timer.textContent = `${slider.value.padStart(2,"0")}:00`;
