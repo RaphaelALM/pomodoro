@@ -8,25 +8,70 @@
           rel="stylesheet">
 </head>
 <style>
+
+
 body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:linear-gradient(135deg, #b1abd2, #b1abd2);
-    font-family:Arial, sans-serif;
+    min-height:100vh;
+    margin:0;
+    background:linear-gradient(135deg,#DCE3E6,#b1abd2);
+    font-family:Arial,sans-serif;
+    overflow-x:hidden;
 }
 
 .container{
-    width:100%;
-    max-width:420px;
+    max-width:480px;
+    margin:0 auto;
     text-align:center;
 }
 
-h1{
-    font-weight:700;
-    margin-bottom:30px;
+
+#gif{
+    display:block;
+    margin:0 auto 0px auto;
+    width:70px;
+    height:auto;
+    image-rendering:pixelated;
 }
+
+
+h1 {
+    font-family: "Press Start 2P", system-ui;
+    
+    padding: 0;
+}
+
+
+@media (max-width: 1000px) {
+    h1.logo {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 700px) {
+    h1.logo {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 500px) {
+    h1.logo {
+        font-size: 2rem;
+    }
+}
+
+
+h1.logo{
+    margin-top:20px;
+    margin-bottom:130px;
+    color:#af9db8;
+    font-size:6rem;
+    text-align: center;
+    text-transform:uppercase;
+    text-shadow:
+        0 5px 0 #9f7db1,
+        0 15px 0 #703b8d;
+}
+
 
 .card{
     background:white;
@@ -53,64 +98,120 @@ circle{
 
 .bg{
     stroke:#e9ecef;
+    stroke-width: 12;
 }
 
 .progress{
-    stroke:#2d22a9;
+    /* stroke:#2d22a9; */
+    stroke:#9f7db1;
     stroke-linecap:round;
     transition:stroke-dashoffset .3s linear;
+    stroke-width: 12;
 }
 
 .timer{
+    font-family: "Press Start 2P", system-ui;
     position:absolute;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:42px;
+    font-size:30px;
     font-weight:700;
 }
 
 .form-range{
+    -webkit-appearance:none;
+    appearance:none;
+
     width:100%;
-    margin-bottom:25px;
+    height:12px;
+
+    background:#e9ecef;
+
+    box-shadow:
+        0px 4px black,
+        0px -4px black,
+        4px 0px black,
+        -4px 0px black;
 }
 
-.buttons{
-    display:flex;
-    gap:10px;
-    justify-content:center;
+.form-range::-webkit-slider-runnable-track{
+    height:12px;
+    background:#e9ecef;
 }
 
-button{
-    flex:1;
+.form-range::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+
+    width:20px;
+    height:20px;
+
+    background:#9f7db1;
+
+    border:none;
+    border-radius:0;
+
+    margin-top:-4px;
+
+    box-shadow:
+        0px 4px black,
+        0px -4px black,
+        4px 0px black,
+        -4px 0px black,
+        0px 6px #00000038,
+        inset 0px 4px #ffffff36;
+
+    cursor:pointer;
 }
+
+
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("fonts/PressStart2P-Regular.ttf") format("truetype");
+}
+
+button {
+    width: 100px;
+    height: 60px;
+    color: #fff;
+    background-color: #6abc3a;
+    padding: 15px 40px 15px 40px;
+    margin: 10px;
+    font-size: 20px;
+    font-family: "Press Start 2P", system-ui;
+    border: 0;
+    box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black, 0px 10px #00000038, 5px 5px #00000038, -5px 5px #00000038, inset 0px 5px #ffffff36 ;
+    cursor: pointer;
+}
+
+ button:active {
+     transform: translateY(5px);
+     box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black,inset 0px 5px #00000038;
+}
+
 </style>
 
 <body>
 
-<div class="container mt-5">
+    <h1 class="logo">Pomodoro</h1>
 
-    <h1 class="mb-4">Pomodoro 2.0</h1>
+<div class="container">
 
-    <div class="mb-3">
-        <input
-                id="minutesSlider"
-                type="range"
-                value="25"
-                min="5"
-                max="60"
-                step="5"
-                class="form-range">
-    </div>
+    
 
-    <hr>
+    <img id="gif"
+         src="static/nukoWriting.gif"
+         alt="nukoWriting">
+
     <div class="timer-container">
-        
+
         <svg width="220" height="220">
-            <circle class="bg"
+            <circle
+                class="bg"
                 cx="110"
                 cy="110"
-                r="95">
+                r="100">
             </circle>
 
             <circle
@@ -118,20 +219,34 @@ button{
                 class="progress"
                 cx="110"
                 cy="110"
-                r="95">
+                r="100">
             </circle>
         </svg>
-            <div id="timer" class="timer">25:00</div>
+
+        <div id="timer" class="timer">25:00</div>
+
     </div>
-        <button id="actionBtn" class="btn btn-primary">Start</button>
-        <button id="stopBtn" class="btn btn-primary">Stop</button>
+
+    <!-- <div class="mb-3"> -->
+        <input
+            id="minutesSlider"
+            type="range"
+            value="25"
+            min="5"
+            max="60"
+            step="5"
+            class="form-range">
+    <!-- </div> -->
+
+    <button id="actionBtn" style="background-color:#9f7db1;">▶</button>
+    <button id="stopBtn" style="background-color:#9f7db1;">■</button>
 
 </div>
 
 <script>
 
     // Progress Circle
-    const radius = 95;
+    const radius = 100;
     const circumference = 2 * Math.PI * radius;
 
     const progressCircle = document.getElementById("progressCircle");
@@ -204,7 +319,7 @@ button{
             
 
             state = "RUNNING";
-            actionBtn.textContent = "Pause";
+            actionBtn.textContent = "❚❚";
             slider.disabled = true;
 
             startLoop();
@@ -217,7 +332,7 @@ button{
             cancelAnimationFrame(animationId);
             animationId = null;
             
-            actionBtn.textContent = "Resume";
+            actionBtn.textContent = "▶";
 
         }
 
@@ -226,7 +341,7 @@ button{
             endTime = Date.now() + remaining;
 
             state = "RUNNING";
-            actionBtn.textContent = "Pause";
+            actionBtn.textContent = "❚❚";
 
 
             startLoop();
@@ -252,7 +367,7 @@ button{
         animationId = null;
 
         slider.disabled = false;
-        actionBtn.textContent = "Start";
+        actionBtn.textContent = "▶";
 
         progressCircle.style.strokeDashoffset = circumference;
         timer.textContent = `${slider.value.padStart(2,"0")}:00`;
