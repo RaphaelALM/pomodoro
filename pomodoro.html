@@ -3,59 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <title>Pomodoro</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
-    .progress-bar{
-    transition: width 0.3s linear;
+
+
+body{
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centraliza verticalmente */
+    align-items: center;     /* centraliza horizontalmente */
+    background: linear-gradient(135deg,#DCE3E6,#b1abd2);
+    font-family: Arial, sans-serif;
 }
+
+.container{
+    max-width: 480px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#gif{
+    display:block;
+    margin:0 auto 0px auto;
+    width:60px;
+    height:auto;
+    image-rendering:pixelated;
+}
+
+
+h1 {
+    font-family: "Press Start 2P", system-ui;  
+    padding: 0;
+}
+
+html, body{
+    overflow: hidden;
+}
+
+h1.logo{
+    margin: 0 0 15px 0;
+    transform: translateY(-60px);
+    color:#af9db8;
+    text-align: center;
+    text-transform:uppercase;
+    text-shadow:
+        0 2px 0 #9f7db1,
+        0 4px 0 #8b6aa0,
+        0 8px 0 #2a0a3b;
+    font-size: clamp(3rem, 12vw, 6rem);
+    white-space: nowrap;
+        
+}
+
+
+.card{
+    background: rgb(255 255 255 / 35%);
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* .card{
+    background:#f5f5f5;
+
+    padding:30px;
+
+    box-shadow:
+        0px 6px black,
+        0px -6px black,
+        6px 0px black,
+        -6px 0px black,
+        0px 12px #00000020;
+
+    border-radius:0;
+} */
+
+
+.timer-container{
+    position:relative;
+    width:220px;
+    height:220px;
+    margin:0 auto 20px auto;
+}
+
+svg{
+    transform:rotate(-90deg);
+}
+
+circle{
+    fill:none;
+    stroke-width:10;
+}
+
+.bg{
+    stroke:#e9ecef;
+    stroke-width: 12;
+}
+
+.progress{
+    /* stroke:#2d22a9; */
+    stroke:#9f7db1;
+    stroke-linecap:round;
+    transition:stroke-dashoffset .3s linear;
+    stroke-width: 12;
+}
+
+.timer{
+    font-family: "Press Start 2P", system-ui;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:30px;
+    font-weight:700;
+}
+
+.form-range{
+    -webkit-appearance:none;
+    appearance:none;
+
+    width:100%;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.form-range::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    outline:none;
+
+
+    width:15px;
+    height:15px;
+
+    background:#9f7db1 !important;
+
+    border:none;
+    border-radius:0;
+
+    margin-top:-4px;
+
+    box-shadow:
+        0px 4px black,
+        0px -4px black,
+        4px 0px black,
+        -4px 0px black,
+        0px 6px #00000038,
+        inset 0px 4px #ffffff36 !important;
+
+    cursor:pointer;
+}
+
+.form-range:disabled {
+    cursor: not-allowed;
+}
+
+.form-range:disabled::-webkit-slider-thumb{
+    background: #7d7d7d !important;
+
+    box-shadow:
+        0px 4px #444,
+        0px -4px #444,
+        4px 0px #444,
+        -4px 0px #444,
+        0px 6px #00000020;
+}
+
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("./fonts/PressStart2P-Regular.ttf") format("truetype");
+  font-display: block;
+}
+
+button {
+    width: 100px;
+    height: 60px;
+    color: #fff;
+    background-color: #6abc3a;
+    padding: 15px 40px 15px 40px;
+    margin: 20px;
+    font-size: 20px;
+    font-family: "Press Start 2P", system-ui;
+    border: 0;
+    box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black, 0px 10px #00000038, 5px 5px #00000038, -5px 5px #00000038, inset 0px 5px #ffffff36 ;
+    cursor: pointer;
+}
+
+ button:active {
+     transform: translateY(5px);
+     box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black,inset 0px 5px #00000038;
+}
+
 </style>
 
 <body>
 
-<div class="container mt-5">
+    <h1 class="logo">Pomodoro</h1>
 
-    <h1 class="mb-4">Pomodoro 2.0</h1>
+<div class="container">
 
-    <div class="mb-3">
-        <input
+    <div class="card">    
+
+        <img id="gif"
+            src="./static/nukoPout.gif"
+            alt="nukoWriting">
+
+        <div class="timer-container">
+
+            <svg width="220" height="220">
+                <circle
+                    class="bg"
+                    cx="110"
+                    cy="110"
+                    r="100">
+                </circle>
+
+                <circle
+                    id="progressCircle"
+                    class="progress"
+                    cx="110"
+                    cy="110"
+                    r="100">
+                </circle>
+            </svg>
+
+            <div id="timer" class="timer">25:00</div>
+
+        </div>
+
+        <!-- <div class="mb-3"> -->
+            <input
                 id="minutesSlider"
                 type="range"
                 value="25"
-                min="5"
+                min="1"
                 max="60"
                 step="5"
                 class="form-range">
+        <!-- </div> -->
+
+        <div class="buttons">
+             <button id="actionBtn" style="background-color:#9f7db1;">▶</button>
+            <button id="stopBtn" style="background-color:#9f7db1;">■</button>
+        </div>
+       
     </div>
-
-    <button id="actionBtn" class="btn btn-primary">Start</button>
-    <button id="stopBtn" class="btn btn-primary">Stop</button>
-
-    <hr>
-
-    <h2>Remaining time</h2>
-    <div class="progress" style="height: 20px;">
-    <div id="progressBar" class="progress-bar" style="width: 0%; transition: none;"></div>
-    </div>
-    <h1 id="timer">25:00</h1>
-
 </div>
 
 <script>
+
+    // Progress Circle
+    const radius = 100;
+    const circumference = 2 * Math.PI * radius;
+
+    const progressCircle = document.getElementById("progressCircle");
+    
+    progressCircle.style.strokeDasharray = circumference;
+    progressCircle.style.strokeDashoffset = circumference;
 
     const slider = document.getElementById("minutesSlider");
     const timer = document.getElementById("timer");
     const actionBtn = document.getElementById("actionBtn");
     const stopBtn = document.getElementById("stopBtn");
-    const progressBar = document.getElementById("progressBar");
+    const gif = document.getElementById("gif");
+
+    const bellSound = new Audio("./static/japanese_school_bell.mp3")
+    bellSound.volume = 0.6;
+
 
     let state = "STOPPED";
     let duration = 0;          // tempo total em ms
     let startTime = 0;         // quando iniciou
-    let endTime = 0;          // 
-    let remaining = 0;       // 
+    let endTime = 0;                // 
     let animationId = null;
 
     /* =========================
@@ -75,12 +299,16 @@
             String(m).padStart(2, "0") + ":" +
             String(s).padStart(2, "0");
         
-        const progress = ((duration - remaining) / duration) * 100;
+        const progress = duration ? (1 - remaining / duration) * 100 : 0;
 
-        progressBar.style.width = Math.min(100, Math.max(0, progress)) + "%";
-
+        // Progress Circle fill way
+        const offset = circumference - (progress / 100) * circumference;
+        progressCircle.style.strokeDashoffset = offset;
+        
         if (remaining <= 0) {
             stop();
+            bellSound.play();
+
         }
     }
 
@@ -100,6 +328,7 @@
     /* =========================
        START
     ========================= */
+
     actionBtn.addEventListener("click",  () => {
 
         if (state === "STOPPED"){
@@ -110,20 +339,22 @@
             
 
             state = "RUNNING";
-            actionBtn.textContent = "Pause";
+            actionBtn.textContent = "❚❚";
             slider.disabled = true;
+            document.getElementById('gif').src = './static/nukoWriting.gif';
 
             startLoop();
 
         } else if (state === "RUNNING") {
 
-            remaining = endTime - Date.now(); 
+            remaining = Math.max(0, endTime - Date.now());
             state = "PAUSED";
 
             cancelAnimationFrame(animationId);
             animationId = null;
-            
-            actionBtn.textContent = "Resume";
+            document.getElementById('gif').src = './static/nukoSleepBlanket.gif';
+
+            actionBtn.textContent = "▶";
 
         }
 
@@ -132,7 +363,8 @@
             endTime = Date.now() + remaining;
 
             state = "RUNNING";
-            actionBtn.textContent = "Pause";
+            actionBtn.textContent = "❚❚";
+            document.getElementById('gif').src = './static/nukoWriting.gif';
 
 
             startLoop();
@@ -143,7 +375,10 @@
     /* =========================
        STOP
     ========================= */
-    stopBtn.addEventListener("click", stop);
+    stopBtn.addEventListener("click", () => {
+        stop(), 
+        gifChanger();});
+  
 
     function stop() {
 
@@ -158,11 +393,18 @@
         animationId = null;
 
         slider.disabled = false;
-        actionBtn.textContent = "Start";
+        actionBtn.textContent = "▶";
 
-        progressBar.style.width = "0%";
+        document.getElementById('gif').src = './static/nukoApplause.gif';
+
+        progressCircle.style.strokeDashoffset = circumference;
         timer.textContent = `${slider.value.padStart(2,"0")}:00`;
     }
+
+    function gifChanger(){
+        document.getElementById('gif').src = './static/nukoAngry18.gif';
+    }
+
 
     /* =========================
        SLIDER
