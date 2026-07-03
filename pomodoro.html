@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Pomodoro</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
 </head>
 <style>
 
@@ -18,12 +18,22 @@ body{
     font-family: Arial, sans-serif;
 }
 
+/* .container{
+    max-width: 480px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+} */
+
 .container{
     max-width: 480px;
     text-align: center;
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    transform: translateY(-80px);
 }
 
 #gif{
@@ -41,52 +51,113 @@ h1 {
 }
 
 html, body{
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-h1.logo{
+/* h1.logo{
     margin: 0 0 15px 0;
     transform: translateY(-60px);
     color:#af9db8;
     text-align: center;
     text-transform:uppercase;
     text-shadow:
+
         0 2px 0 #9f7db1,
         0 4px 0 #8b6aa0,
         0 8px 0 #2a0a3b;
+
+    font-size: clamp(3rem, 12vw, 6rem);
+    white-space: nowrap;
+        
+} 
+*/
+
+h1.logo{
+    margin: -80px 0 150px 0;
+    transform: none;
+    
+    color:#af9db8;
+    text-align: center;
+    text-transform:uppercase;
+    text-shadow:
+
+        0 2px 0 #9f7db1,
+        0 4px 0 #8b6aa0,
+        0 8px 0 black;
+
     font-size: clamp(3rem, 12vw, 6rem);
     white-space: nowrap;
         
 }
 
 
-.card{
-    background: rgb(255 255 255 / 35%);
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.1);
-}
-
 /* .card{
-    background:#f5f5f5;
 
-    padding:30px;
+    background: #d8d8e6;
+
+    padding: 30px;
+
+    
+    box-shadow:
+        2px 2px 0 #9f7db1,
+        4px 4px 0 #8b6aa0,
+        6px 6px 0 #4b235e; 
+
 
     box-shadow:
-        0px 6px black,
-        0px -6px black,
-        6px 0px black,
-        -6px 0px black,
-        0px 12px #00000020;
+        inset 1px 1px 0 rgba(255,255,255,.5),
+        inset -1px -1px 0 rgba(0,0,0,.15),
 
-    border-radius:0;
+        2px 2px 0 #9f7db1,
+        4px 4px 0 #8b6aa0,
+        7px 7px 0 black;
+
+    border-radius: 1;
+
 } */
+
+/* .card {
+    background: #d8d8e6;
+    padding: 30px;
+
+    box-shadow:
+        0 5px black,
+        0 -5px black,
+        5px 0 black,
+        -5px 0 black,
+
+        0 10px #00000038,
+        5px 5px #00000038,
+        -5px 5px #00000038,
+
+        inset 0 5px #ffffff36;
+        border-radius: 0;
+} */
+
+/* .card {
+    
+    width: fit-content;
+    padding: 30px 40px;
+
+    background: rgb(192, 181, 197);
+
+    box-shadow:
+        0 2px 0 #9f7db1,
+        0 4px 0 #8b6aa0,
+        0 8px 0 black,
+
+        inset 0 5px #ffffff36;
+
+    border-radius: 0;
+
+} */
+
 
 
 .timer-container{
     position:relative;
-    width:220px;
-    height:220px;
+    width:280px;
+    height:280px;
     margin:0 auto 20px auto;
 }
 
@@ -118,7 +189,7 @@ circle{
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:30px;
+    font-size:38px;
     font-weight:700;
 }
 
@@ -126,9 +197,9 @@ circle{
     -webkit-appearance:none;
     appearance:none;
 
-    width:100%;
-    margin-top: 25px;
-    margin-bottom: 15px;
+    width: 450px;
+    margin-top: 30px;
+    margin-bottom: 25px;
 }
 
 .form-range::-webkit-slider-thumb{
@@ -136,9 +207,11 @@ circle{
     appearance:none;
     outline:none;
 
+    width: 24px;
+    height: 24px;
 
-    width:15px;
-    height:15px;
+    margin-top: -7px;
+
 
     background:#9f7db1 !important;
 
@@ -162,6 +235,13 @@ circle{
     cursor: not-allowed;
 }
 
+
+.form-range::-webkit-slider-runnable-track{
+    height: 12px;
+    background: #e9ecef;
+}
+
+
 .form-range:disabled::-webkit-slider-thumb{
     background: #7d7d7d !important;
 
@@ -180,6 +260,25 @@ circle{
 }
 
 button {
+    width: 120px;
+    height: 70px;
+    color: #fff;
+    background-color: #6abc3a;
+    padding: 15px 40px 15px 40px;
+    margin: 30px;
+    font-size: 30px;
+    font-family: "Press Start 2P", system-ui;
+    border: 0;
+    box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black, 0px 10px #00000038, 5px 5px #00000038, -5px 5px #00000038, inset 0px 5px #ffffff36 ;
+    cursor: pointer;
+}
+
+ button:active {
+     transform: translateY(5px);
+     box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black,inset 0px 5px #00000038;
+}
+
+/* button {
     width: 100px;
     height: 60px;
     color: #fff;
@@ -196,7 +295,7 @@ button {
  button:active {
      transform: translateY(5px);
      box-shadow: 0px 5px black, 0px -5px black, 5px 0px black, -5px 0px black,inset 0px 5px #00000038;
-}
+} */
 
 </style>
 
@@ -214,20 +313,20 @@ button {
 
         <div class="timer-container">
 
-            <svg width="220" height="220">
+            <svg width="280" height="280">
                 <circle
                     class="bg"
-                    cx="110"
-                    cy="110"
-                    r="100">
+                    cx="140"
+                    cy="140"
+                    r="125">
                 </circle>
 
                 <circle
                     id="progressCircle"
                     class="progress"
-                    cx="110"
-                    cy="110"
-                    r="100">
+                    cx="140"
+                    cy="140"
+                    r="125">
                 </circle>
             </svg>
 
@@ -257,7 +356,7 @@ button {
 <script>
 
     // Progress Circle
-    const radius = 100;
+    const radius = 125;
     const circumference = 2 * Math.PI * radius;
 
     const progressCircle = document.getElementById("progressCircle");
@@ -403,7 +502,6 @@ button {
     function gifChanger(){
         document.getElementById('gif').src = './static/nukoAngry18.gif';
     }
-
 
     /* =========================
        SLIDER
